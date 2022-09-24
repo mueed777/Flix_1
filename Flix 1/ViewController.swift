@@ -13,6 +13,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     @IBOutlet weak var tableView: UITableView!
+    
     var movies = [[String:Any]]()
 
     override func viewDidLoad() {
@@ -26,7 +27,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         let task = session.dataTask(with: request) { (data, response, error) in
-             // This will run when the network request returns
+             // This will run w/Users/abdulhassan/Desktop/CodePath program/Flix_1/Flix 1/Assets.xcassets A 76x76@2x app icon is required for iPad apps targeting iOS 7.0 and laterhen the network request returns
              if let error = error {
                     print(error.localizedDescription)
              } else if let data = data {
@@ -36,7 +37,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                  
                  self.tableView.reloadData()
                  
-                 print(dataDictionary)
+//                 print(dataDictionary)
                     // TODO: Get the array of movies
                     // TODO: Store the movies in a property to use elsewhere
                     // TODO: Reload your table view data
@@ -69,6 +70,26 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.posterView.af_setImage(withURL: posterURL!)
         
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        // get the new view controller using segue.destination
+        // pass the selected object to the new view controller
+        
+        
+        print("Loading up details screen")
+        
+        // find the selected movie
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)!
+        let movie = movies[indexPath.row]
+        
+        // pass the selected movie to the details view controller
+        let detailsViewController = segue.destination as! MovieDetailsViewController
+        detailsViewController.movie = movie
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
 
